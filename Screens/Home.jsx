@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
 
 
 
-    
+
     const renderOrderItem = ({ item }) => {
 
         return (
@@ -643,48 +643,55 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
-    useEffect(() => {
-        // Configure react-native-location
-        RNLocation.configure({
-            distanceFilter: 5.0, // specify the minimum distance between updates in meters
-            interval: 10000, // specify the time interval between updates in milliseconds (10 seconds in this case)
-        });
+    // useEffect(() => {
+    //     // Configure react-native-location
+    //     RNLocation.configure({
+    //         distanceFilter: 5.0, // specify the minimum distance between updates in meters
+    //         interval: 10000, // specify the time interval between updates in milliseconds (10 seconds in this case)
+    //         desiredAccuracy: {
+    //             ios: 'best',
+    //             android: 'balancedPowerAccuracy',
+    //         },
+    //         allowsBackgroundLocationUpdates: true,
+    //         showsBackgroundLocationIndicator: true,
 
-        // Request location permissions if not granted
-        RNLocation.requestPermission({
-            ios: 'whenInUse', // or 'always'
-            android: {
-                detail: 'coarse', // or 'fine'
-                rationale: {
-                    title: 'Location Permission',
-                    message: 'We need your location for tracking purposes.',
-                    buttonPositive: 'OK',
-                    buttonNegative: 'Cancel',
-                },
-            },
-        }).then(granted => {
-            if (granted) {
-                // Start listening for location updates
-                const subscription = RNLocation.subscribeToLocationUpdates(locations => {
-                    // Handle location updates
-                    console.log('locations..',locations);
-                });
+    //     });
 
-                // Stop listening for location updates when component is unmounted
-                return () => {
-                    subscription && subscription();
-                };
-            } else {
-                // Handle permission denied
-            }
-        });
+    //     // Request location permissions if not granted
+    //     RNLocation.requestPermission({
+    //         ios: 'whenInUse', // or 'always'
+    //         android: {
+    //             detail: 'coarse', // or 'fine'
+    //             rationale: {
+    //                 title: 'Location Permission',
+    //                 message: 'We need your location for tracking purposes.',
+    //                 buttonPositive: 'OK',
+    //                 buttonNegative: 'Cancel',
+    //             },
+    //         },
+    //     }).then(granted => {
+    //         if (granted) {
+    //             // Start listening for location updates
+    //             const subscription = RNLocation.subscribeToLocationUpdates(locations => {
+    //                 // Handle location updates
+    //                 console.log('locations..', locations);
+    //             });
 
-        // Clean up on component unmount
-        return () => {
-            Geolocation.stopObserving();
-            RNLocation.unsubscribe(subscription);
-        };
-    }, []);
+    //             // Stop listening for location updates when component is unmounted
+    //             return () => {
+    //                 subscription && subscription();
+    //             };
+    //         } else {
+    //             // Handle permission denied
+    //         }
+    //     });
+
+    //     // Clean up on component unmount
+    //     return () => {
+    //         Geolocation.stopObserving();
+    //         RNLocation.unsubscribe(subscription);
+    //     };
+    // }, []);
 
 
     useEffect(() => {
