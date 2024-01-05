@@ -1,14 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    
     ext {
         buildToolsVersion = "34.0.0"
         minSdkVersion = 21
         compileSdkVersion = 34
         targetSdkVersion = 34
         // appCompatVersion 	= "1.4.2" 
-        // googlePlayServicesLocationVersion = "21.0.1"
+        googlePlayServicesLocationVersion = "21.0.1"
         ndkVersion = "25.1.8937393"
         kotlinVersion = "1.8.0"
+        gradleVersion = '7.0.0'
     }
     repositories {
         google()
@@ -16,7 +18,7 @@ buildscript {
         
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("com.android.tools.build:gradle:7.0.0")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion") // Specify the Kotlin version here
     }
@@ -28,7 +30,7 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url "https://maven.aliyun.com/repository/jcenter" } // or use the official repository
-        // maven { url("${project(':react-native-background-geolocation').projectDir}/libs") }
+        //maven { url("${project(':@mauron85/react-native-background-geolocation').projectDir}/libs") }
         // maven { url("${project(':react-native-background-fetch').projectDir}/libs") }
 
     }
@@ -38,7 +40,13 @@ apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 android {
     compileSdkVersion 34
-
+    buildToolsVersion "34.0.0"
+    ndkVersion "25.1.8937393"
+    tasks.all {
+        if (it.name.contains('mergeDebugJniLibFolders')) {
+            it.enabled = false
+        }
+    }
     sourceSets {
         main {
             manifest.srcFile 'app/src/main/AndroidManifest.xml' // Update this path
@@ -52,8 +60,12 @@ android {
     }
 
     buildTypes {
-        release {
+         release {
             debuggable true
+            // minifyEnabled true
+            // shrinkResources true
+            // proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            // signingConfig signingConfigs.release
         }
     }
 
@@ -73,18 +85,19 @@ android {
     // ... other configurations
 }
 
-configurations.all {
-    resolutionStrategy {
-        eachDependency { details ->
-            if (details.requested.group == 'com.android.support') {
-                details.useVersion "27.1.1"
-            }
-        }
-    }
-}
+// configurations.all {
+//     resolutionStrategy {
+//         eachDependency { details ->
+//             if (details.requested.group == 'com.android.support') {
+//                 details.useVersion "27.1.1"
+//             }
+//         }
+//     }
+// }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.annotation:annotation:1.3.0'
 }
+

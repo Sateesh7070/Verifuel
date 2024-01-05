@@ -27,7 +27,10 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-
+      <service
+          android:name="com.marianhello.bgloc.data.BackgroundGeolocationService"
+          android:enabled="true"
+          android:exported="false"/>
       <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCJE6GgHSU75KO_dq164G9gx5cD_Z73N3s" />
 		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     </application>

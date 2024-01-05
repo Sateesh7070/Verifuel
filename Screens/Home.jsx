@@ -644,18 +644,7 @@ const HomeScreen = ({ navigation }) => {
     };
 
     // useEffect(() => {
-    //     // Configure react-native-location
-    //     RNLocation.configure({
-    //         distanceFilter: 5.0, // specify the minimum distance between updates in meters
-    //         interval: 10000, // specify the time interval between updates in milliseconds (10 seconds in this case)
-    //         desiredAccuracy: {
-    //             ios: 'best',
-    //             android: 'balancedPowerAccuracy',
-    //         },
-    //         allowsBackgroundLocationUpdates: true,
-    //         showsBackgroundLocationIndicator: true,
-
-    //     });
+    //     let subscription;
 
     //     // Request location permissions if not granted
     //     RNLocation.requestPermission({
@@ -671,8 +660,23 @@ const HomeScreen = ({ navigation }) => {
     //         },
     //     }).then(granted => {
     //         if (granted) {
+    //             // Configure RNLocation
+    //             RNLocation.configure({
+    //                 distanceFilter: 100, // Meters
+    //                 desiredAccuracy: {
+    //                     ios: 'best',
+    //                     android: 'balancedPowerAccuracy',
+    //                 },
+    //                 androidProvider: 'auto',
+    //                 interval: 10000, // Milliseconds
+    //                 fastestInterval: 10000, // Milliseconds
+    //                 maxWaitTime: 5000, // Milliseconds
+    //                 allowsBackgroundLocationUpdates: true,
+    //                 showsBackgroundLocationIndicator: true,
+    //             });
+
     //             // Start listening for location updates
-    //             const subscription = RNLocation.subscribeToLocationUpdates(locations => {
+    //             subscription = RNLocation.subscribeToLocationUpdates(locations => {
     //                 // Handle location updates
     //                 console.log('locations..', locations);
     //             });
@@ -688,8 +692,7 @@ const HomeScreen = ({ navigation }) => {
 
     //     // Clean up on component unmount
     //     return () => {
-    //         Geolocation.stopObserving();
-    //         RNLocation.unsubscribe(subscription);
+    //         subscription && subscription();
     //     };
     // }, []);
 
