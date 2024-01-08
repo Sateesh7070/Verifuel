@@ -3,8 +3,10 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.brentvatne.react.ReactVideoPackage; // Import the ReactVideoPackage
 //import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 
-import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
-import com.marianhello.bgloc.react.BackgroundGeolocationModule;
+import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
+import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
+// import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
+// import com.marianhello.bgloc.react.BackgroundGeolocationModule;
 import android.app.Application;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -30,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-           packages.add(new BackgroundGeolocationPackage());
+           //packages.add(new RNBackgroundFetchPackage());
+           //packages.add(new RNBackgroundGeolocation());
           return packages;
         }
 

@@ -1,8 +1,9 @@
 PODS:
-  - "@mauron85_react-native-background-geolocation (0.6.3)":
-    - React
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
+  - CocoaLumberjack (3.7.4):
+    - CocoaLumberjack/Core (= 3.7.4)
+  - CocoaLumberjack/Core (3.7.4)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.72.3)
   - FBReactNativeSpec (0.72.3):
@@ -548,6 +549,11 @@ PODS:
     - React-jsi (= 0.72.3)
     - React-logger (= 0.72.3)
     - React-perflogger (= 0.72.3)
+  - RNBackgroundFetch (4.2.1):
+    - React-Core
+  - RNBackgroundGeolocation (4.14.5):
+    - CocoaLumberjack (~> 3.7.2)
+    - React-Core
   - RNCAsyncStorage (1.19.1):
     - React-Core
   - RNDateTimePicker (7.6.2):
@@ -596,7 +602,6 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - "@mauron85_react-native-background-geolocation (from `../node_modules/@mauron85/react-native-background-geolocation`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -668,6 +673,8 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
+  - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -680,6 +687,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - CocoaAsyncSocket
+    - CocoaLumberjack
     - Flipper
     - Flipper-Boost-iOSX
     - Flipper-DoubleConversion
@@ -696,8 +704,6 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  "@mauron85_react-native-background-geolocation":
-    :path: "../node_modules/@mauron85/react-native-background-geolocation"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -791,6 +797,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNBackgroundFetch:
+    :path: "../node_modules/react-native-background-fetch"
+  RNBackgroundGeolocation:
+    :path: "../node_modules/react-native-background-geolocation"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDateTimePicker:
@@ -809,9 +819,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  "@mauron85_react-native-background-geolocation": fa34ab82e94212be16ef6e75c32bcb707b0a1524
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
+  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 4cce221dd782d3ff7c4172167bba09d58af67ccb
   FBReactNativeSpec: c6bd9e179757b3c0ecf815864fae8032377903ef
@@ -869,6 +879,8 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 837c1bebd2f84572db17698cd702ceaf585b0d9a
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
+  RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
+  RNBackgroundGeolocation: bf3b45667c4d3c999501f5f8cb16dc35fc01e759
   RNCAsyncStorage: f47fe18526970a69c34b548883e1aeceb115e3e1
   RNDateTimePicker: fc2e4f2795877d45e84d85659bebe627eba5c931
   RNDeviceInfo: 5795b418ed3451ebcaf39384e6cf51f60cb931c9
@@ -880,6 +892,6 @@ SPEC CHECKSUMS:
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a1e57d92ea0c2dad7f50aba2baf1dc131e043365
+PODFILE CHECKSUM: b3c9b9c633895f6d86761816bc3b8ab50ba18b42
 
 COCOAPODS: 1.14.3

@@ -21,10 +21,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Geolocation from '@react-native-community/geolocation';
-import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
-
-import RNLocation from 'react-native-location';
-import useTracking from '../Helpers/LocationTracking';
+import { initBackgroundFetch } from '../Helpers/Tracking';
+//import useTracking from '../Helpers/LocationTracking';
 import AppStatusBar from '../Helpers/AppStatusBar';
 import Toolbar from '../Helpers/Toolbar';
 import { DeleteShipmentsByStatusId, InsertShipmentData, GetAllShipments, UpSertShipmentProduct, UpSertShipmentBOL, UpSertShipmentBOLProduct, upsertTerminal, UpSertShipTo } from '../Helpers/DbContext';
@@ -72,12 +70,13 @@ const HomeScreen = ({ navigation }) => {
     const [listOrders, setListData] = useState([]);
     const [OrdersCount, setOrdersCount] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const [IsGPS, setGPSEnable] = useState(true);
 
     const [lastUpdatedTime, setLastUpdatedTime] = useState(new Date());
 
-    const [location, setLocation] = useState(null);
+    // const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
-
+    //const { location } = useTracking(IsGPS);
     const bottomSheetRef = useRef(null);;
     const snapPoints = ['45%']; // Define your snap points
 
@@ -118,9 +117,6 @@ const HomeScreen = ({ navigation }) => {
 
         { id: 7, title: 'Logout', image: 'logout' } //MaterialCommunityIcons
     ];
-
-
-
 
     const renderOrderItem = ({ item }) => {
 
@@ -328,161 +324,21 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
-    const SetInterval = () => {
-        const intervalCallback = async () => {
-            try {
-                const currentTime = new Date();
-
-                if (currentTime - lastUpdatedTime > INTERVAL) {
-                    let granted = false;
-
-                    if (Platform.OS === 'android') {
-                        // // For Android, run background tasks using BackgroundTimer
-                        // BackgroundTimer.runBackgroundTimer(() => {
-                        //     console.log('Background task executed.');
-                        //     BackgroundTimer.stopBackgroundTimer();
-                        // }, 30000); // 30 seconds
-                    }
-
-                    // Request location permission
-                    try {
-                        const locationPermission = await RNLocation.requestPermission({
-                            ios: 'whenInUse',
-                            android: {
-                                detail: 'coarse',
-                                rationale: {
-                                    title: 'Location Permission',
-                                    message: 'We need your location for tracking purposes.',
-                                    buttonPositive: 'OK',
-                                    buttonNegative: 'Cancel',
-                                },
-                            },
-                        });
-
-                        granted = locationPermission === 'authorized';
-                    } catch (error) {
-                        console.error('Error requesting location permission:', error);
-                    }
-
-                    if (granted) {
-                        // Start background location updates (handle iOS accordingly)
-                        startBackgroundGeolocation();
-
-                        // Update the last updated time
-                        setLastUpdatedTime(currentTime);
-                    } else {
-                        setError('Location permission denied');
-                    }
-
-                    console.log('lastUpdatedTime:', lastUpdatedTime);
-                }
-            } catch (error) {
-                console.error('Error in intervalCallback:', error);
-            }
-        };
-
-        // Use BackgroundTimer for more accurate foreground intervals
-        const intervalId = setInterval(intervalCallback, INTERVAL);
-
-        // Clear interval on component unmount
-        return () => {
-            // BackgroundTimer.clearInterval(intervalId);
-
-            // // Stop any ongoing background tasks for Android
-            // if (Platform.OS === 'android') {
-            //     BackgroundTimer.stopBackgroundTimer();
-            // }
-        };
-    };
-
-    // const SetInterval = async () => {
-    //     try {
-    //         const intervalCallback = async () => {
-    //             try {
-    //                 if (new Date().getTime() - lastUpdatedTime.getTime() > INTERVAL) {
-
-    //                     RNLocation.requestPermission({
-    //                         ios: 'whenInUse',
-    //                         android: {
-    //                             detail: 'coarse',
-    //                             rationale: {
-    //                                 title: 'Location Permission',
-    //                                 message: 'We need your location for tracking purposes.',
-    //                                 buttonPositive: 'OK',
-    //                                 buttonNegative: 'Cancel',
-    //                             },
-    //                         },
-    //                     }).then(granted => {
-    //                         if (granted) {
-    //                             // Start background location updates
-    //                             startBackgroundGeolocation();
-
-    //                             // Clean up the subscription when the componentreturn () => subscription && subscription();
-    //                         } else {
-    //                             setError('Location permission denied');
-    //                         }
-    //                     });
-
-    //                     console.log('lastUpdatedTime::', lastUpdatedTime);
-    //                     setLastUpdatedTime(new Date());
-    //                 }
-    //             } catch (error) {
-    //                 console.log('Error in intervalCallback:', error);
-    //             }
-    //         };
-
-    //         const intervalId = setInterval(intervalCallback, INTERVAL);
-
-    //         return () => clearInterval(intervalId);
-
-    //     } catch (error) {
-    //         console.log('Error retrieving device ID:', error);
-    //     }
-    // }
-
-    const startBackgroundGeolocationhh = async () => {
-
-        const locationOptions = {
-            enableHighAccuracy: true,
-            timeout: 5000, // Timeout for location acquisition
-            maximumAge: 0, // Maximum age for a possible cached location
-            distanceFilter: 0, // Minimum distance between location updates
-        };
-
+    const SetInterval = async () => {
         try {
-            const locationPermission = await RNLocation.requestPermission({
-                ios: 'whenInUse',
-                android: {
-                    detail: 'coarse',
-                    rationale: {
-                        title: 'Location Permission',
-                        message: 'We need your location for tracking purposes.',
-                        buttonPositive: 'OK',
-                        buttonNegative: 'Cancel',
-                    },
-                },
-            });
+            const intervalCallback = async () => {
+                // console.log('Current Time:', new Date());
+                console.log('Current Time::', new Date().toISOString());
+                // console.log('lastUpdatedTime:', lastUpdatedTime);
+                handleApiCall();
+            };
 
-            granted = locationPermission === 'authorized';
+            const intervalId = setInterval(intervalCallback, INTERVAL);
+
+            return () => clearInterval(intervalId);
+
         } catch (error) {
-            console.error('Error requesting location permission:', error);
-        }
-
-        if (granted) {
-            // Start background location updates (handle iOS accordingly)
-            Geolocation.getCurrentPosition(
-                (position) => {
-                    // Handle the received position data here
-                    console.log('Position:', position);
-                },
-                (error) => {
-                    // Handle location error
-                    console.error('Location error:', error);
-                },
-                locationOptions,
-            );
-        } else {
-            setError('Location permission denied');
+            console.log('Error retrieving device ID:', error);
         }
     }
 
@@ -527,8 +383,8 @@ const HomeScreen = ({ navigation }) => {
                 console.log("Gps UnMasked", location)
                 // Construct postData object
                 postData = {
-                    latitude: location.latitude, //33.985798, //location.latitude,33.985798,-83.419841
-                    longitude: location.longitude, //-83.419841, //,
+                    latitude: 33.985798, //location.latitude,33.985798,-83.419841
+                    longitude: -83.419841, //,
                     GPSTimeStamp: new Date().toISOString(),
                     lastModified: new Date().toISOString(),
                     userID: UserId,
@@ -643,62 +499,10 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
-    // useEffect(() => {
-    //     let subscription;
-
-    //     // Request location permissions if not granted
-    //     RNLocation.requestPermission({
-    //         ios: 'whenInUse', // or 'always'
-    //         android: {
-    //             detail: 'coarse', // or 'fine'
-    //             rationale: {
-    //                 title: 'Location Permission',
-    //                 message: 'We need your location for tracking purposes.',
-    //                 buttonPositive: 'OK',
-    //                 buttonNegative: 'Cancel',
-    //             },
-    //         },
-    //     }).then(granted => {
-    //         if (granted) {
-    //             // Configure RNLocation
-    //             RNLocation.configure({
-    //                 distanceFilter: 100, // Meters
-    //                 desiredAccuracy: {
-    //                     ios: 'best',
-    //                     android: 'balancedPowerAccuracy',
-    //                 },
-    //                 androidProvider: 'auto',
-    //                 interval: 10000, // Milliseconds
-    //                 fastestInterval: 10000, // Milliseconds
-    //                 maxWaitTime: 5000, // Milliseconds
-    //                 allowsBackgroundLocationUpdates: true,
-    //                 showsBackgroundLocationIndicator: true,
-    //             });
-
-    //             // Start listening for location updates
-    //             subscription = RNLocation.subscribeToLocationUpdates(locations => {
-    //                 // Handle location updates
-    //                 console.log('locations..', locations);
-    //             });
-
-    //             // Stop listening for location updates when component is unmounted
-    //             return () => {
-    //                 subscription && subscription();
-    //             };
-    //         } else {
-    //             // Handle permission denied
-    //         }
-    //     });
-
-    //     // Clean up on component unmount
-    //     return () => {
-    //         subscription && subscription();
-    //     };
-    // }, []);
-
-
     useEffect(() => {
 
+        initBackgroundFetch();
+        
         GetUser();
 
         checkLoginState();

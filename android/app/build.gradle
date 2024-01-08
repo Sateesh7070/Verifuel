@@ -106,13 +106,21 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.0.0")
+    //implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.0.0")
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-vector-icons')
     //implementation project(':@react-native-async-storage_async-storage')
     implementation project(':react-native-video')
-    implementation project(':@mauron85_react-native-background-geolocation')
+    
+    implementation project(':react-native-background-fetch')
+    implementation project(':react-native-background-geolocation')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
 
+    implementation 'androidx.work:work-runtime:2.7.1'
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    // implementation ('com.transistorsoft:tslocationmanager-v21:4.0.0') {
+    //     exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    // }
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
@@ -123,6 +131,13 @@ dependencies {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'androidx.work:work-runtime:2.8.1'
+        force 'androidx.work:work-runtime-ktx:2.8.1'
     }
 }
 

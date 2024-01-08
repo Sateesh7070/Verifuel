@@ -5,6 +5,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  //[GMSServices provideAPIKey:@"AIzaSyCJE6GgHSU75KO_dq164G9gx5cD_Z73N3s"]; // add this line using the api key obtained from Google Console
   self.moduleName = @"Verifuel";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.

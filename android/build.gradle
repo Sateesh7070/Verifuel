@@ -32,6 +32,12 @@ allprojects {
         maven { url "https://maven.aliyun.com/repository/jcenter" } // or use the official repository
         //maven { url("${project(':@mauron85/react-native-background-geolocation').projectDir}/libs") }
         // maven { url("${project(':react-native-background-fetch').projectDir}/libs") }
+        maven {
+           url "$rootDir/../node_modules/react-native-background-geolocation/android/libs"
+        }
+        maven {
+           url "$rootDir/../node_modules/react-native-background-fetch/android/libs"
+        }
 
     }
 }
