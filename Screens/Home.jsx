@@ -71,6 +71,7 @@ const HomeScreen = ({ navigation }) => {
     const [OrdersCount, setOrdersCount] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [IsGPS, setGPSEnable] = useState(true);
+    const [location, setLocation] = useState(null);
 
     const [lastUpdatedTime, setLastUpdatedTime] = useState(new Date());
 
@@ -380,7 +381,8 @@ const HomeScreen = ({ navigation }) => {
 
             if (isGPSMask === "0" || isGPSMask === null) {
 
-                console.log("Gps UnMasked", location)
+                Alert.alert('Location', String(location.latitude));
+                console.log("Gps UnMasked",location.latitude)
                 // Construct postData object
                 postData = {
                     latitude: 33.985798, //location.latitude,33.985798,-83.419841
@@ -499,10 +501,19 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
+    const handleLocationUpdate = (location) => {
+        // Use the location data as needed
+        console.log("Received location update:", location.coords);
+        if (location && location.coords) {
+            console.log("Received location update11111111:", location.coords);
+            setLocation(location.coords);
+        }        // You can update your component's state or perform any other action here
+    };
+
     useEffect(() => {
 
-        initBackgroundFetch();
-        
+        initBackgroundFetch(handleLocationUpdate);
+
         GetUser();
 
         checkLoginState();
@@ -511,7 +522,7 @@ const HomeScreen = ({ navigation }) => {
 
         SetInterval();
 
-    }, []);
+    }, [location]);
 
     const renderEmptyList = () => (
         <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'red', flex: 1 }}>
